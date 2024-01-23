@@ -1,13 +1,14 @@
-import org.apache.hadoopconf.Configuration;
- org.apache..fs.FileSystem;import org.apachehadoop.fs.;
-import orgapache.hadoop..NullWritable;
- org.apache..io.Text;
-import orgapache.hadoop.reduce.Reduc;
-import org.apache.hadoop.mapreduce.counters.Counter;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.NullWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileSplit;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class KMeansReducer extends Reducer<Text, KMeansMapper.ClusterWritable, Text, NullWritable> {
@@ -76,6 +77,6 @@ public class KMeansReducer extends Reducer<Text, KMeansMapper.ClusterWritable, T
             fileSystem.mkdirs(cachePath);
         }
 
-        fileSystem.create(new Path(cachePath, filePath), newCenter.getBytes(), (short) 4, context.getConfiguration().get("io.compression.codecs"));
+        fileSystem.create(new Path(cachePath, filePath)).write(newCenter.getBytes());
     }
 }
